@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_unicah_biblioteca" model="ir.ui.view">
+        <field name="name">res.partner.form.unicah.biblioteca</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="tienda_unicah.view_partner_form_tienda_unicah"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='unicah']" position="inside">
+                <field name="prestamo_ids" readonly="1" invisible="tipo_cliente != 'estudiante'">
+                    <list>
+                        <field name="libro_id"/>
+                        <field name="fecha_limite"/>
+                        <field name="estado"/>
+                        <field name="multa"/>
+                    </list>
+                </field>
+            </xpath>
+        </field>
+    </record>
+</odoo>

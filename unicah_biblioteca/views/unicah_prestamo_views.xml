@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="unicah_prestamo_view_list" model="ir.ui.view">
+        <field name="name">unicah.prestamo.list</field>
+        <field name="model">unicah.prestamo</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="libro_id"/>
+                <field name="estudiante_id"/>
+                <field name="fecha_prestamo"/>
+                <field name="fecha_limite"/>
+                <field name="estado"/>
+                <field name="dias_atraso"/>
+                <field name="multa"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="unicah_prestamo_view_form" model="ir.ui.view">
+        <field name="name">unicah.prestamo.form</field>
+        <field name="model">unicah.prestamo</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_devolver" string="Registrar devolución" type="object" invisible="estado != 'prestado'"/>
+                    <field name="estado" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="libro_id"/>
+                            <field name="estudiante_id"/>
+                        </group>
+                        <group>
+                            <field name="fecha_prestamo"/>
+                            <field name="fecha_limite"/>
+                            <field name="fecha_devolucion"/>
+                            <field name="dias_atraso"/>
+                            <field name="multa"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="unicah_prestamo_action" model="ir.actions.act_window">
+        <field name="name">Préstamos</field>
+        <field name="res_model">unicah.prestamo</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="unicah_prestamo_menu" name="Préstamos"
+              parent="unicah_biblioteca_menu_root"
+              action="unicah_prestamo_action" sequence="20"/>
+</odoo>
