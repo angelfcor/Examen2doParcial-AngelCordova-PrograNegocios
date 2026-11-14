@@ -24,7 +24,12 @@ class SaleOrder(models.Model):
         readonly=True,
         copy=False,
     )
-
+    monto_ahorro = fields.Monetary(
+        string="Ahorro por convenio",
+        compute="_compute_monto_ahorro",
+        store=True,
+        currency_field="currency_id",
+    )
     @api.depends("partner_id", "date_order")
     def _compute_convenio_id(self):
         for order in self:
@@ -34,7 +39,14 @@ class SaleOrder(models.Model):
                 ("fecha_inicio", "<=", fecha),
                 "|", ("fecha_fin", "=", False), ("fecha_fin", ">=", fecha),
             ], limit=1)
-
+    @api.depends("order_line.price_unit", "order_line.product_uom_qty",
+                 "order_line.discount", "order_line.display_type")
+    def _compute_monto_ahorro(self):
+        for order in self:
+            order.monto_ahorro = sum(
+                l.price_unit * l.product_uom_qty * l.discount / 100
+                for l in order.order_line if not l.display_type
+            )
     def action_aplicar_convenio(self):
         for order in self:
             if order.state not in ("draft", "sent"):
@@ -48,7 +60,6 @@ class SaleOrder(models.Model):
                 body=f"Se aplicó el {order.convenio_id.name} "
                      f"con {order.convenio_id.porcentaje:g} % de descuento."
             )
-            
     def action_confirm(self):
         for order in self:
             if order.tipo_cliente == "estudiante":
