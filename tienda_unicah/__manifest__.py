@@ -5,11 +5,12 @@
     "category": "Sales/Sales",
     "author": "Ángel Córdova",
     "depends": ["sale_management"],
-    "data": [
+        "data": [
         "security/ir.access.csv",
         "data/tienda_convenio_data.xml",
         "views/res_partner_views.xml",
         "views/tienda_convenio_views.xml",
+        "views/sale_order_views.xml",
     ],
     "license": "LGPL-3",
 }
